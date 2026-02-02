@@ -404,23 +404,425 @@
     }
   }
 
-  function initializeForm() {
-    console.log('ContactForm: DOM ready, initializing');
+  /**
+   * Scroll-Triggered Reveal Animation with Intersection Observer
+   * Implements staggered animations for sections as they enter viewport
+   */
+  class ScrollReveal {
+    constructor() {
+      this.elements = [];
+      this.observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -100px 0px',
+        threshold: 0.15
+      };
 
-    const formElement = document.querySelector('.contact-form');
+      this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (formElement) {
-      new ContactForm(formElement);
-      console.log('ContactForm: Initialization complete');
-    } else {
-      console.warn('ContactForm: Form element not found');
+      console.log('ScrollReveal: Initialization started', {
+        reducedMotion: this.reducedMotion,
+        observerSupported: 'IntersectionObserver' in window
+      });
+
+      this.init();
+    }
+
+    init() {
+      if (this.reducedMotion) {
+        console.log('ScrollReveal: Reduced motion preferred, skipping animations');
+        this.revealAllImmediately();
+        return;
+      }
+
+      if (!('IntersectionObserver' in window)) {
+        console.warn('ScrollReveal: IntersectionObserver not supported, revealing all elements');
+        this.revealAllImmediately();
+        return;
+      }
+
+      this.setupObserver();
+      this.observeElements();
+      console.log('ScrollReveal: Initialization complete');
+    }
+
+    setupObserver() {
+      this.observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this.revealElement(entry.target);
+            this.observer.unobserve(entry.target);
+          }
+        });
+      }, this.observerOptions);
+    }
+
+    observeElements() {
+      this.elements = Array.from(document.querySelectorAll('[data-reveal]'));
+
+      console.log(`ScrollReveal: Found ${this.elements.length} elements to observe`);
+
+      this.elements.forEach((element) => {
+        this.observer.observe(element);
+      });
+    }
+
+    revealElement(element) {
+      requestAnimationFrame(() => {
+        element.classList.add('revealed');
+        console.log('ScrollReveal: Element revealed', {
+          tag: element.tagName,
+          class: element.className
+        });
+      });
+    }
+
+    revealAllImmediately() {
+      const elements = document.querySelectorAll('[data-reveal]');
+      elements.forEach((element) => {
+        element.classList.add('revealed');
+        element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
+      });
+      console.log(`ScrollReveal: Revealed ${elements.length} elements immediately`);
+    }
+
+    destroy() {
+      if (this.observer) {
+        this.observer.disconnect();
+        console.log('ScrollReveal: Observer disconnected');
+      }
     }
   }
 
+  /**
+   * Button Morphing Interactions and Smooth Scroll Behavior
+   * Handles CTA button states and smooth scrolling for navigation
+   */
+  class ButtonMorphing {
+    constructor() {
+      this.buttons = [];
+      this.buttonStates = new WeakMap();
+
+      console.log('ButtonMorphing: Initialization started');
+      this.init();
+    }
+
+    init() {
+      this.setupButtons();
+      this.setupSmoothScroll();
+      console.log('ButtonMorphing: Initialization complete');
+    }
+
+    setupButtons() {
+      this.buttons = Array.from(document.querySelectorAll('.cta-button'));
+
+      console.log(`ButtonMorphing: Found ${this.buttons.length} CTA buttons`);
+
+      this.buttons.forEach((button) => {
+        this.initializeButton(button);
+      });
+    }
+
+    initializeButton(button) {
+      this.buttonStates.set(button, {
+        state: 'idle',
+        originalText: button.textContent.trim()
+      });
+
+      button.addEventListener('mouseenter', () => this.handleHover(button));
+      button.addEventListener('mouseleave', () => this.handleLeave(button));
+      button.addEventListener('mousedown', () => this.handleActive(button));
+      button.addEventListener('mouseup', () => this.handleRelease(button));
+      button.addEventListener('click', (e) => this.handleClick(button, e));
+
+      button.addEventListener('focus', () => {
+        console.log('ButtonMorphing: Button focused', { text: button.textContent.trim() });
+      });
+
+      button.addEventListener('blur', () => {
+        const state = this.buttonStates.get(button);
+        if (state && state.state !== 'loading') {
+          this.resetButton(button);
+        }
+      });
+    }
+
+    handleHover(button) {
+      const state = this.buttonStates.get(button);
+      if (!state || state.state === 'loading') return;
+
+      console.log('ButtonMorphing: Button hover', { text: state.originalText });
+      button.style.setProperty('--hover-scale', '1.02');
+    }
+
+    handleLeave(button) {
+      const state = this.buttonStates.get(button);
+      if (!state || state.state === 'loading') return;
+
+      button.style.removeProperty('--hover-scale');
+    }
+
+    handleActive(button) {
+      const state = this.buttonStates.get(button);
+      if (!state || state.state === 'loading') return;
+
+      console.log('ButtonMorphing: Button active', { text: state.originalText });
+    }
+
+    handleRelease(button) {
+      const state = this.buttonStates.get(button);
+      if (!state || state.state === 'loading') return;
+
+      console.log('ButtonMorphing: Button released', { text: state.originalText });
+    }
+
+    handleClick(button, event) {
+      const state = this.buttonStates.get(button);
+      if (!state) return;
+
+      if (state.state === 'loading') {
+        event.preventDefault();
+        console.log('ButtonMorphing: Click ignored, button in loading state');
+        return;
+      }
+
+      const href = button.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        event.preventDefault();
+        this.smoothScrollTo(href);
+      }
+
+      console.log('ButtonMorphing: Button clicked', {
+        text: state.originalText,
+        href: href || 'none'
+      });
+    }
+
+    setLoadingState(button) {
+      const state = this.buttonStates.get(button);
+      if (!state) return;
+
+      state.state = 'loading';
+      button.disabled = true;
+      button.setAttribute('aria-busy', 'true');
+
+      const buttonText = button.querySelector('.button-text');
+      if (buttonText) {
+        buttonText.style.opacity = '0.5';
+      }
+
+      const spinner = button.querySelector('.button-spinner');
+      if (spinner) {
+        spinner.style.display = 'block';
+      }
+
+      console.log('ButtonMorphing: Button loading state set', { text: state.originalText });
+    }
+
+    setSuccessState(button) {
+      const state = this.buttonStates.get(button);
+      if (!state) return;
+
+      state.state = 'success';
+      button.disabled = false;
+      button.setAttribute('aria-busy', 'false');
+
+      const buttonText = button.querySelector('.button-text');
+      if (buttonText) {
+        buttonText.textContent = 'Success!';
+        buttonText.style.opacity = '1';
+      }
+
+      const spinner = button.querySelector('.button-spinner');
+      if (spinner) {
+        spinner.style.display = 'none';
+      }
+
+      console.log('ButtonMorphing: Button success state set', { text: state.originalText });
+
+      setTimeout(() => {
+        this.resetButton(button);
+      }, 2000);
+    }
+
+    resetButton(button) {
+      const state = this.buttonStates.get(button);
+      if (!state) return;
+
+      state.state = 'idle';
+      button.disabled = false;
+      button.setAttribute('aria-busy', 'false');
+
+      const buttonText = button.querySelector('.button-text');
+      if (buttonText) {
+        buttonText.textContent = state.originalText;
+        buttonText.style.opacity = '1';
+      }
+
+      const spinner = button.querySelector('.button-spinner');
+      if (spinner) {
+        spinner.style.display = 'none';
+      }
+
+      console.log('ButtonMorphing: Button reset to idle', { text: state.originalText });
+    }
+
+    setupSmoothScroll() {
+      const navLinks = document.querySelectorAll('a[href^="#"]');
+
+      console.log(`ButtonMorphing: Setting up smooth scroll for ${navLinks.length} links`);
+
+      navLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
+          const href = link.getAttribute('href');
+          if (href && href !== '#' && href.startsWith('#')) {
+            e.preventDefault();
+            this.smoothScrollTo(href);
+          }
+        });
+      });
+    }
+
+    smoothScrollTo(target) {
+      const element = document.querySelector(target);
+
+      if (!element) {
+        console.warn(`ButtonMorphing: Smooth scroll target not found: ${target}`);
+        return;
+      }
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reducedMotion) {
+        element.scrollIntoView();
+        console.log('ButtonMorphing: Instant scroll (reduced motion)', { target });
+      } else {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        console.log('ButtonMorphing: Smooth scroll initiated', { target });
+      }
+
+      if (element.hasAttribute('tabindex')) {
+        element.focus();
+      } else {
+        element.setAttribute('tabindex', '-1');
+        element.focus();
+        element.addEventListener('blur', () => {
+          element.removeAttribute('tabindex');
+        }, { once: true });
+      }
+    }
+  }
+
+  /**
+   * Skeleton Loading for Testimonial Images
+   * Implements loading placeholders for async image loading
+   */
+  class SkeletonLoading {
+    constructor() {
+      this.images = [];
+      console.log('SkeletonLoading: Initialization started');
+      this.init();
+    }
+
+    init() {
+      this.setupTestimonialImages();
+      console.log('SkeletonLoading: Initialization complete');
+    }
+
+    setupTestimonialImages() {
+      const testimonialImages = document.querySelectorAll('.testimonial-photo img');
+
+      console.log(`SkeletonLoading: Found ${testimonialImages.length} testimonial images`);
+
+      testimonialImages.forEach((img) => {
+        this.setupImageLoading(img);
+      });
+    }
+
+    setupImageLoading(img) {
+      const container = img.closest('.testimonial-photo');
+      if (!container) return;
+
+      if (!img.complete || img.naturalHeight === 0) {
+        this.showSkeleton(container, img);
+
+        img.addEventListener('load', () => {
+          this.hideSkeleton(container, img);
+        });
+
+        img.addEventListener('error', () => {
+          this.handleImageError(container, img);
+        });
+      } else {
+        console.log('SkeletonLoading: Image already loaded', { src: img.src });
+      }
+    }
+
+    showSkeleton(container, img) {
+      container.classList.add('loading');
+      img.style.opacity = '0';
+
+      console.log('SkeletonLoading: Skeleton shown', { src: img.src });
+    }
+
+    hideSkeleton(container, img) {
+      setTimeout(() => {
+        container.classList.remove('loading');
+        img.style.opacity = '1';
+
+        console.log('SkeletonLoading: Image loaded, skeleton hidden', { src: img.src });
+      }, 200);
+    }
+
+    handleImageError(container, img) {
+      container.classList.remove('loading');
+      img.style.opacity = '0.3';
+      img.alt = `${img.alt} (failed to load)`;
+
+      console.error('SkeletonLoading: Image failed to load', { src: img.src });
+    }
+  }
+
+  /**
+   * Initialize all interactive features
+   */
+  function initializeInteractions() {
+    console.log('Application: DOM ready, initializing all features');
+
+    const formElement = document.querySelector('.contact-form');
+    if (formElement) {
+      new ContactForm(formElement);
+      console.log('Application: ContactForm initialized');
+    } else {
+      console.warn('Application: Contact form element not found');
+    }
+
+    const scrollReveal = new ScrollReveal();
+    console.log('Application: ScrollReveal initialized');
+
+    const buttonMorphing = new ButtonMorphing();
+    console.log('Application: ButtonMorphing initialized');
+
+    const skeletonLoading = new SkeletonLoading();
+    console.log('Application: SkeletonLoading initialized');
+
+    console.log('Application: All features initialized successfully');
+
+    window.addEventListener('beforeunload', () => {
+      if (scrollReveal) {
+        scrollReveal.destroy();
+      }
+      console.log('Application: Cleanup completed');
+    });
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeForm);
+    document.addEventListener('DOMContentLoaded', initializeInteractions);
   } else {
-    initializeForm();
+    initializeInteractions();
   }
 
 })();

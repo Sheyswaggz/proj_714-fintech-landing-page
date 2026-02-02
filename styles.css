@@ -1707,6 +1707,250 @@ footer {
    Print Styles
    ========================================================================== */
 
+/* ==========================================================================
+   Enhanced Button Morphing Animations - Additional Interactive States
+   ========================================================================== */
+
+.cta-button[data-state="loading"] {
+  pointer-events: none;
+  cursor: wait;
+}
+
+.cta-button[data-state="success"] {
+  background: linear-gradient(135deg, var(--color-success) 0%, #20a439 100%);
+  border-color: var(--color-success);
+}
+
+.cta-button[data-state="error"] {
+  background: linear-gradient(135deg, var(--color-error) 0%, #c82333 100%);
+  border-color: var(--color-error);
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-8px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(8px);
+  }
+}
+
+.cta-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.cta-button:disabled:hover {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(58, 141, 250, 0.3);
+}
+
+/* Button press animation */
+@keyframes buttonPress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cta-button:active:not(:disabled) {
+  animation: buttonPress 0.2s ease-in-out;
+}
+
+/* Shimmer effect for skeleton loading */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.testimonial-photo.loading::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+  border-radius: var(--radius-full);
+}
+
+/* Enhanced smooth scroll behavior */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Focus management for keyboard navigation */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+.cta-button:focus-visible {
+  outline: 3px solid var(--color-primary-400);
+  outline-offset: 3px;
+}
+
+/* Loading state transitions */
+.cta-button .button-text,
+.cta-button .button-spinner {
+  transition: opacity var(--transition-base);
+}
+
+/* Hero CTA buttons - Enhanced morphing states */
+.hero-cta .cta-button {
+  min-width: 160px;
+  position: relative;
+}
+
+.hero-cta .cta-button::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: calc(var(--radius-lg) + 4px);
+  background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-600) 100%);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity var(--transition-base);
+}
+
+.hero-cta .cta-button:hover::after {
+  opacity: 0.15;
+}
+
+/* Accessibility - High Contrast Mode for Buttons */
+@media (prefers-contrast: high) {
+  .cta-button {
+    border-width: 3px;
+  }
+
+  .cta-button:focus-visible {
+    outline-width: 4px;
+  }
+
+  .cta-button.primary:hover,
+  .cta-button.secondary:hover {
+    border-width: 4px;
+  }
+}
+
+/* Additional reveal animation variants */
+[data-reveal].reveal-from-left {
+  transform: translateX(-40px);
+}
+
+[data-reveal].reveal-from-left.revealed {
+  transform: translateX(0);
+}
+
+[data-reveal].reveal-from-right {
+  transform: translateX(40px);
+}
+
+[data-reveal].reveal-from-right.revealed {
+  transform: translateX(0);
+}
+
+[data-reveal].reveal-scale {
+  transform: scale(0.9);
+}
+
+[data-reveal].reveal-scale.revealed {
+  transform: scale(1);
+}
+
+/* Stagger delays for trust section elements */
+.testimonials-grid-trust .testimonial-card-trust[data-reveal]:nth-child(1) {
+  transition-delay: 0ms;
+}
+
+.testimonials-grid-trust .testimonial-card-trust[data-reveal]:nth-child(2) {
+  transition-delay: 100ms;
+}
+
+.testimonials-grid-trust .testimonial-card-trust[data-reveal]:nth-child(3) {
+  transition-delay: 200ms;
+}
+
+.testimonials-grid-trust .testimonial-card-trust[data-reveal]:nth-child(4) {
+  transition-delay: 300ms;
+}
+
+.statistics-grid .stat-card[data-reveal]:nth-child(1) {
+  transition-delay: 0ms;
+}
+
+.statistics-grid .stat-card[data-reveal]:nth-child(2) {
+  transition-delay: 100ms;
+}
+
+.statistics-grid .stat-card[data-reveal]:nth-child(3) {
+  transition-delay: 200ms;
+}
+
+.statistics-grid .stat-card[data-reveal]:nth-child(4) {
+  transition-delay: 300ms;
+}
+
+.trust-badges-grid .trust-badge[data-reveal]:nth-child(1) {
+  transition-delay: 0ms;
+}
+
+.trust-badges-grid .trust-badge[data-reveal]:nth-child(2) {
+  transition-delay: 150ms;
+}
+
+.trust-badges-grid .trust-badge[data-reveal]:nth-child(3) {
+  transition-delay: 300ms;
+}
+
+.trust-badges-grid .trust-badge[data-reveal]:nth-child(4) {
+  transition-delay: 450ms;
+}
+
+/* Testimonials grid stagger */
+.testimonials-grid .testimonial-card[data-reveal]:nth-child(1) {
+  transition-delay: 0ms;
+}
+
+.testimonials-grid .testimonial-card[data-reveal]:nth-child(2) {
+  transition-delay: 100ms;
+}
+
+.testimonials-grid .testimonial-card[data-reveal]:nth-child(3) {
+  transition-delay: 200ms;
+}
+
+/* Contact form reveal */
+.contact-form[data-reveal] {
+  transition-delay: 100ms;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
 @media print {
   header,
   footer,
