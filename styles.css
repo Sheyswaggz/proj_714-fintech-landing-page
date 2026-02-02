@@ -783,9 +783,14 @@ section h2 {
   font-size: var(--font-size-base);
   color: var(--color-text-primary);
   background: var(--color-surface);
-  border: 1px solid var(--color-gray-300);
+  border: 2px solid var(--color-gray-300);
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
+}
+
+.form-group input:hover:not(:disabled),
+.form-group textarea:hover:not(:disabled) {
+  border-color: var(--color-gray-400);
 }
 
 .form-group input:focus,
@@ -800,8 +805,282 @@ section h2 {
   min-height: 120px;
 }
 
+/* Form Validation States */
+.form-group input:invalid:not(:placeholder-shown),
+.form-group textarea:invalid:not(:placeholder-shown) {
+  border-color: var(--color-error);
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: var(--color-error);
+  background: hsl(0, 100%, 98%);
+}
+
+.form-group input.error:focus,
+.form-group textarea.error:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px hsla(0, 65%, 51%, 0.15);
+}
+
+.form-group input.success,
+.form-group textarea.success {
+  border-color: var(--color-success);
+  background: hsl(142, 100%, 98%);
+}
+
+.form-group input.success:focus,
+.form-group textarea.success:focus {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px hsla(142, 71%, 45%, 0.15);
+}
+
+/* Form Error Messages */
+.form-error {
+  display: none;
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  margin-top: var(--space-xs);
+}
+
+.form-group.has-error .form-error {
+  display: block;
+}
+
+.form-group.has-error input,
+.form-group.has-error textarea {
+  border-color: var(--color-error);
+  background: hsl(0, 100%, 98%);
+}
+
+/* Error Message (inline field errors) */
+.error-message {
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  margin-top: var(--space-xs);
+  display: block;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Success Messages */
+.form-success {
+  display: none;
+  font-size: var(--font-size-sm);
+  color: var(--color-success);
+  margin-top: var(--space-xs);
+}
+
+.form-group.has-success .form-success {
+  display: block;
+}
+
+.form-group.has-success input,
+.form-group.has-success textarea {
+  border-color: var(--color-success);
+  background: hsl(142, 100%, 98%);
+}
+
+/* Success Indicator Icons */
+.form-group.has-success {
+  position: relative;
+}
+
+.form-group.has-success input:not([type="textarea"])::after,
+.form-group.has-success textarea::after {
+  content: '\u2713';
+  position: absolute;
+  right: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-success);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Loading States */
+.form-group input:disabled,
+.form-group textarea:disabled {
+  background: var(--color-gray-100);
+  border-color: var(--color-gray-300);
+  color: var(--color-gray-500);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .contact-form .btn {
   width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-form .btn:disabled {
+  background: var(--color-gray-400);
+  color: var(--color-gray-100);
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+  box-shadow: none;
+}
+
+.contact-form .btn:disabled:hover {
+  background: var(--color-gray-400);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Loading Spinner */
+.btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid var(--color-text-on-primary);
+  border-radius: var(--radius-full);
+  border-top-color: transparent;
+  animation: spinner 0.6s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn.loading {
+  color: transparent;
+  pointer-events: none;
+}
+
+/* Form Message Notifications (Success/Error) */
+.form-message {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-xl);
+  animation: slideDown 0.3s ease-out;
+  box-shadow: var(--shadow-md);
+}
+
+.form-message svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.form-message strong {
+  display: block;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-xs);
+}
+
+.form-message p {
+  font-size: var(--font-size-sm);
+  margin-bottom: 0;
+  line-height: var(--line-height-relaxed);
+}
+
+/* Success Message */
+.form-success {
+  background: hsl(142, 71%, 95%);
+  border: 2px solid var(--color-success);
+  color: hsl(142, 71%, 25%);
+}
+
+.form-success svg {
+  color: var(--color-success);
+}
+
+/* Error Message */
+.form-error {
+  background: hsl(0, 65%, 95%);
+  border: 2px solid var(--color-error);
+  color: hsl(0, 65%, 25%);
+}
+
+.form-error svg {
+  color: var(--color-error);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Legacy Success/Error Message Styles (kept for compatibility) */
+.form-success-message {
+  display: none;
+  padding: var(--space-lg);
+  background: var(--color-success);
+  color: white;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  margin-bottom: var(--space-lg);
+  animation: slideDown 0.3s ease-out;
+}
+
+.form-success-message.show {
+  display: block;
+}
+
+.form-success-message h3 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-sm);
+  color: white;
+}
+
+.form-success-message p {
+  font-size: var(--font-size-base);
+  margin-bottom: 0;
+  color: white;
+}
+
+.form-error-message {
+  display: none;
+  padding: var(--space-lg);
+  background: var(--color-error);
+  color: white;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  margin-bottom: var(--space-lg);
+  animation: slideDown 0.3s ease-out;
+}
+
+.form-error-message.show {
+  display: block;
+}
+
+.form-error-message h3 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-sm);
+  color: white;
+}
+
+.form-error-message p {
+  font-size: var(--font-size-base);
+  margin-bottom: 0;
+  color: white;
 }
 
 /* ============================================
