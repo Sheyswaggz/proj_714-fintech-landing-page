@@ -1074,6 +1074,444 @@ footer {
 }
 
 /* ==========================================================================
+   Trust and Credibility Section - Social Proof with Testimonials, Logos, Badges, and Statistics
+   ========================================================================== */
+
+.trust-credibility {
+  padding: var(--space-5xl) var(--container-padding);
+  background: linear-gradient(180deg,
+    var(--color-background) 0%,
+    var(--color-surface) 50%,
+    var(--color-background) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.trust-credibility::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--color-border) 50%, transparent 100%);
+}
+
+.trust-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5xl);
+}
+
+.subsection-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+  letter-spacing: -0.01em;
+}
+
+/* Testimonials with Photos */
+.testimonials-section {
+  width: 100%;
+}
+
+.testimonials-grid-trust {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2xl);
+}
+
+.testimonial-card-trust {
+  background: var(--color-background);
+  padding: var(--space-2xl);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-card-trust::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.testimonial-card-trust:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.1), 0 8px 16px -4px rgba(58, 141, 250, 0.15);
+  border-color: var(--color-primary-300);
+}
+
+.testimonial-card-trust:hover::before {
+  opacity: 1;
+}
+
+.testimonial-photo {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.testimonial-photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 3px solid var(--color-primary-100);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.testimonial-quote {
+  margin: 0;
+}
+
+.testimonial-quote p {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-primary);
+  font-style: italic;
+  margin: 0;
+  position: relative;
+  padding-left: var(--space-lg);
+  border-left: 3px solid var(--color-primary-400);
+}
+
+.testimonial-attribution {
+  margin-top: var(--space-md);
+}
+
+.testimonial-attribution cite {
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.testimonial-attribution strong {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.testimonial-attribution span {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Client Logos Section */
+.client-logos-section {
+  width: 100%;
+  padding: var(--space-3xl) 0;
+  background: var(--color-surface);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-border);
+}
+
+.client-logos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2xl);
+  align-items: center;
+  justify-items: center;
+  padding: var(--space-xl);
+}
+
+.client-logo {
+  width: 100%;
+  max-width: 140px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+  filter: grayscale(100%) opacity(0.6);
+  color: var(--color-text-secondary);
+}
+
+.client-logo:hover {
+  filter: grayscale(0%) opacity(1);
+  transform: scale(1.05);
+  color: var(--color-primary-600);
+}
+
+.client-logo svg {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+}
+
+/* Trust Badges Section */
+.trust-badges-section {
+  width: 100%;
+}
+
+.trust-badges-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+  background: var(--color-background);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.trust-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(58, 141, 250, 0.02) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.trust-badge:hover {
+  border-color: var(--color-primary-400);
+  box-shadow: 0 8px 16px -2px rgba(58, 141, 250, 0.15);
+  transform: translateX(4px);
+}
+
+.trust-badge:hover::before {
+  opacity: 1;
+}
+
+.badge-icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary-600);
+  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-primary-100) 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  transition: all var(--transition-base);
+}
+
+.trust-badge:hover .badge-icon {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(58, 141, 250, 0.2);
+}
+
+.badge-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.badge-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+}
+
+.badge-content strong {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.badge-content span {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Statistics Section */
+.statistics-section {
+  width: 100%;
+}
+
+.statistics-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2xl);
+}
+
+.stat-card {
+  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-background) 100%);
+  padding: var(--space-2xl);
+  border-radius: var(--radius-xl);
+  border: 2px solid var(--color-primary-200);
+  text-align: center;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(58, 141, 250, 0.05) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--color-primary-400);
+  box-shadow: 0 16px 32px -8px rgba(58, 141, 250, 0.2);
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+.stat-number {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-600);
+  line-height: 1;
+  margin-bottom: var(--space-md);
+  display: block;
+  letter-spacing: -0.02em;
+  position: relative;
+}
+
+.stat-label {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+  display: block;
+  line-height: var(--line-height-tight);
+}
+
+.stat-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+/* Responsive Trust Section - Tablet (768px and up) */
+@media (min-width: 768px) {
+  .testimonials-grid-trust {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .client-logos-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3xl);
+  }
+
+  .client-logo {
+    max-width: 160px;
+  }
+
+  .trust-badges-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .statistics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Responsive Trust Section - Desktop (1024px and up) */
+@media (min-width: 1024px) {
+  .testimonials-grid-trust {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3xl);
+  }
+
+  .client-logos-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-4xl);
+    padding: var(--space-2xl);
+  }
+
+  .client-logo {
+    max-width: 180px;
+    height: 70px;
+  }
+
+  .trust-badges-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2xl);
+  }
+
+  .trust-badge {
+    padding: var(--space-2xl);
+  }
+
+  .badge-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .badge-content strong {
+    font-size: var(--font-size-xl);
+  }
+
+  .statistics-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-2xl);
+  }
+
+  .stat-card {
+    padding: var(--space-3xl) var(--space-2xl);
+  }
+
+  .stat-label {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* Skeleton Loading State for Testimonial Photos */
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.testimonial-photo.loading {
+  background: linear-gradient(90deg,
+    var(--color-neutral-200) 0%,
+    var(--color-neutral-100) 50%,
+    var(--color-neutral-200) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.testimonial-photo.loading img {
+  opacity: 0;
+}
+
+/* ==========================================================================
    High Contrast Mode Support
    ========================================================================== */
 
@@ -1095,6 +1533,20 @@ footer {
   .service-card:hover {
     border-color: var(--color-primary-700);
     border-width: 3px;
+  }
+
+  .testimonial-card-trust,
+  .trust-badge,
+  .stat-card {
+    border-width: 3px;
+  }
+
+  .client-logo {
+    filter: grayscale(100%) opacity(0.9);
+  }
+
+  .client-logo:hover {
+    filter: grayscale(0%) opacity(1);
   }
 }
 
