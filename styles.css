@@ -319,26 +319,10 @@ header {
 
 .hero {
   padding: var(--space-4xl) 0;
+  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-accent-400) 100%);
   background: linear-gradient(135deg,
     hsl(210, 100%, 97%) 0%,
-    hsl(200, 95%, 95%) 25%,
-    hsl(190, 85%, 94%) 50%,
-    hsl(180, 75%, 93%) 75%,
     hsl(180, 65%, 96%) 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 20% 50%, hsla(210, 100%, 85%, 0.3) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, hsla(180, 85%, 75%, 0.2) 0%, transparent 50%);
-  pointer-events: none;
 }
 
 .hero-container {
@@ -348,8 +332,6 @@ header {
   display: grid;
   gap: var(--space-3xl);
   align-items: center;
-  position: relative;
-  z-index: 1;
 }
 
 .hero-content {
@@ -357,22 +339,18 @@ header {
 }
 
 .hero h1 {
-  font-size: clamp(var(--font-size-3xl), 5vw, var(--font-size-5xl));
+  font-size: var(--font-size-3xl);
   color: var(--color-primary-900);
   margin-bottom: var(--space-lg);
-  line-height: 1.1;
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -0.02em;
 }
 
 .hero-subtitle {
-  font-size: clamp(var(--font-size-base), 2.5vw, var(--font-size-lg));
+  font-size: var(--font-size-lg);
   color: var(--color-text-secondary);
   margin-bottom: var(--space-2xl);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-  line-height: var(--line-height-relaxed);
 }
 
 .hero-cta {
@@ -397,7 +375,7 @@ header {
 }
 
 /* ============================================
-   Button Styles with Morphing Effects
+   Button Styles
    ============================================ */
 
 .btn {
@@ -411,68 +389,30 @@ header {
   transition: all var(--transition-base);
   cursor: pointer;
   border: 2px solid transparent;
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: inherit;
-  opacity: 0;
-  transition: opacity var(--transition-base);
-  z-index: -1;
 }
 
 .btn-primary {
   background: var(--color-primary-600);
   color: var(--color-text-on-primary);
-  box-shadow: var(--shadow-md);
 }
 
 .btn-primary:hover {
   background: var(--color-primary-700);
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: var(--shadow-xl);
-}
-
-.btn-primary:active {
-  transform: translateY(-1px) scale(1.02);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
-  transition: all 100ms ease-in-out;
-}
-
-.btn-primary:focus-visible {
-  outline: 3px solid var(--color-primary-300);
-  outline-offset: 3px;
 }
 
 .btn-secondary {
   background: transparent;
   color: var(--color-primary-600);
   border-color: var(--color-primary-600);
-  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
   background: var(--color-primary-600);
   color: var(--color-text-on-primary);
-  transform: translateY(-3px) scale(1.05);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
-  border-color: var(--color-primary-600);
-}
-
-.btn-secondary:active {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: var(--shadow-md);
-  transition: all 100ms ease-in-out;
-}
-
-.btn-secondary:focus-visible {
-  outline: 3px solid var(--color-primary-300);
-  outline-offset: 3px;
 }
 
 /* ============================================
@@ -805,7 +745,7 @@ footer {
   }
 
   .hero h1 {
-    font-size: clamp(var(--font-size-4xl), 6vw, var(--font-size-6xl));
+    font-size: var(--font-size-5xl);
   }
 
   .hero-subtitle {
@@ -868,7 +808,7 @@ footer {
 
   /* Hero Section */
   .hero h1 {
-    font-size: clamp(var(--font-size-5xl), 7vw, var(--font-size-6xl));
+    font-size: var(--font-size-6xl);
   }
 
   /* Services Grid */
